@@ -6,22 +6,9 @@
  @Desc   :
 '''
 '''
-我们至少要选择100多个店铺的某一个产品的评论信息，比如官方旗舰店以及各种手机专卖店
-分析oppo reno 系列手机
-首先利用find_all('div',class_='search-result-boxout')
-然后继续定位到find_all('div',class_='title') ,最后查找第一个a标签的href属性
-对于一个具体的网址：
-需要获取评论人的昵称、店铺名、评论的总人数，该人的评论、发布的时间、该店铺的星级、该店铺的总的粉丝数量
-比如我们爬取到的该商品的链接为https://item.jd.com/57521830334.html ，但是直接去爬取的话，是找不到相应的评论的，
-要想爬取下来则要在https://item.jd.com/57521830334.html#comment该网进行爬取,而且此时我们爬取只需要直接获取productpagecomment这个JS的
+来则要在https://item.jd.com/57521830334.html#comment该网进行爬取,而且此时我们爬取只需要直接获取productpagecomment这个JS的
 内容即可
-产品评论网站：https://sclub.jd.com/comment/productPageComments.action?callback=fetchJSON_comment98vv308
-&productId=57521830334&score=0&sortType=5&page=0&pageSize=10&isShadowSku=0&fold=1
-https://club.jd.com/comment/productPageComments.action?callback=fetchJSON_comment98vv358&
-productId=57521830334&score=0&sortType=5&page=0&pageSize=10&isShadowSku=0&fold=1
-https://item.jd.com/57521830334.html#comment
-https://item.jd.com/100008643302.html#comment
-产品网站：https://item.jd.com/productId.html#comment
+产品评论网站:
 获取个产品的网址的网站：
 https://search.jd.com/Search?keyword=oppo%20reno&enc=utf-8&suggest=1.rem.0.0&wq=oppo%20reno&pvid=e69b2a8e30a34f6984fc293b2192d23e
 '''
@@ -71,7 +58,7 @@ class jd_comment():
                     jj+=1
             except Exception as result:
                 print('error',result)
-        all_info.to_csv('C:/Users/Administrator/Desktop/data/评论/product_info_before.csv')
+        all_info.to_csv('product_info_before.csv')
         print('所有产品的基本信息已经加载完成****************')
         return all_info
 
@@ -93,7 +80,7 @@ class jd_comment():
         print('index:',index_drop)
         info.drop(info.index[index_drop],inplace=True)
         print('the len of info :',len(info))
-        info.to_csv('C:/Users/Administrator/Desktop/data/评论/product_info_after.csv')
+        info.to_csv('product_info_after.csv')
         print('基本信息处理完成******************')
         return info
 
@@ -159,7 +146,7 @@ class jd_comment():
             comment=self._getcomment(product_id,comment_num)
             comment_total=pd.concat([comment_total,comment],axis=0)
             print('product:{0} 已经爬取完毕'.format(product_id))
-        comment_total.to_csv('C:/Users/Administrator/Desktop/data/评论/comment_info_final.csv')
+        comment_total.to_csv('comment_info_final.csv')
         return comment_total
 
 
@@ -199,8 +186,6 @@ class cup_comment():
     def __init__(self):
         print('开始爬取京东商城上关于cup手机的评论')
     def getnet_info(self):
-        #需要得到groupid,,commidityCode,shop_id，差评数量以及中评数量
-
         '''利用搜索到的结果获取每个产品的productid以及获取其下的评论个数'''
 
 
@@ -236,7 +221,7 @@ class cup_comment():
                     print('第{0}个产品信息加载完毕'.format(jj))
             except Exception as result:
                 print('error',result)
-        all_info.to_csv('C:/Users/Administrator/Desktop/data/评论/product_info_cup_before.csv')
+        all_info.to_csv('product_info_cup_before.csv')
         print('所有产品的基本信息已经加载完成****************')
         return all_info
 
@@ -258,7 +243,7 @@ class cup_comment():
         print('index:', index_drop)
         info.drop(info.index[index_drop], inplace=True)
         print('the len of info :', len(info))
-        info.to_csv('C:/Users/Administrator/Desktop/data/评论/product_info_cup_after.csv')
+        info.to_csv('product_info_cup_after.csv')
         print('基本信息处理完成******************')
         return info
     def _getcomment(self,product_id,type_id,comment_num):
@@ -352,7 +337,7 @@ class cup_comment():
                     comment_total=pd.concat([comment_total,comment_normal],axis=0)
                     comment_total = pd.concat([comment_total, comment_poor], axis=0)
                     print('shop_id:{0} 已经爬取完毕'.format(shopId))
-                    comment_total.to_csv('C:/Users/Administrator/Desktop/data/评论/comment_info_cup1_final.csv')
+                    comment_total.to_csv('comment_info_cup1_final.csv')
 
                 else:
                     continue
@@ -360,10 +345,6 @@ class cup_comment():
                 print(result)
         return comment_total
 
-# P=jd_comment()
-# all_info=P.getnet_info()
-# info=P.getinfo(all_info)
-# comment=P.get_all_comment(info)
 
 
 M=cup_comment()
